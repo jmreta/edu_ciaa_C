@@ -95,10 +95,43 @@
  */
 int main(void)
 {
-   /* perform the needed initialization here */
 
+
+	   Chip_SCU_PinMux(1,0,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[4], SW1 */
+	   Chip_SCU_PinMux(1,1,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[8], SW2 */
+	   Chip_SCU_PinMux(1,2,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO0[9], SW3 */
+	   Chip_SCU_PinMux(1,6,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO1[9], SW4 */
+
+	   Chip_GPIO_SetDir(LPC_GPIO_PORT, 0,(1<<4)|(1<<8)|(1<<9),0);
+	   Chip_GPIO_SetDir(LPC_GPIO_PORT, 1,(1<<9),0);
+
+	   /* LEDs */
+	   Chip_SCU_PinMux(2,0,MD_PUP,FUNC4);  /* GPIO5[0], LED0R */
+	   Chip_SCU_PinMux(2,1,MD_PUP,FUNC4);  /* GPIO5[1], LED0G */
+	   Chip_SCU_PinMux(2,2,MD_PUP,FUNC4);  /* GPIO5[2], LED0B */
+	   Chip_SCU_PinMux(2,10,MD_PUP,FUNC0); /* GPIO0[14], LED1 */
+	   Chip_SCU_PinMux(2,11,MD_PUP,FUNC0); /* GPIO1[11], LED2 */
+	   Chip_SCU_PinMux(2,12,MD_PUP,FUNC0); /* GPIO1[12], LED3 */
+
+	   Chip_GPIO_SetDir(LPC_GPIO_PORT, 5,(1<<0)|(1<<1)|(1<<2),1);
+	   Chip_GPIO_SetDir(LPC_GPIO_PORT, 0,(1<<14),1);
+	   Chip_GPIO_SetDir(LPC_GPIO_PORT, 1,(1<<11)|(1<<12),1);
+
+	   Chip_GPIO_ClearValue(LPC_GPIO_PORT, 5,(1<<0)|(1<<1)|(1<<2));
+	   Chip_GPIO_ClearValue(LPC_GPIO_PORT, 0,(1<<14));
+	   Chip_GPIO_ClearValue(LPC_GPIO_PORT, 1,(1<<11)|(1<<12));
+
+	/*Hardware GPIO initialization (leds, buttons ...)*/
+
+
+   /* perform the needed initialization here */
    while(1) {
       /* add your code here */
+
+       Chip_GPIO_ClearValue(LPC_GPIO_PORT, 5, 1<<13);
+
+       Chip_GPIO_SetValue(LPC_GPIO_PORT, 5, 1<<13);
+
    }
    return 0;
 }
